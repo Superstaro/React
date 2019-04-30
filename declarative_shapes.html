@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Declarative Shapes</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #shape{
+        display: grid;
+        place-items: center;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        color: lightgray;
+        font-size: 2rem;
+        text-shadow: 2px 2px 2px black;
+        transition: all 0.4s;
+        background-color: red;
+      }
+      #shape::selection{
+        background:transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Shape extends React.Component{
+        state = { shape: 'square' }
+ 
+        changeShape = () => {
+          if(this.state.shape === 'square'){
+            this.setState({ shape: 'circle' })
+          }else{
+            this.setState({ shape: 'square' })
+          }
+        }
+ 
+        render(){
+          const { shape } = this.state
+          return(
+            <React.Fragment>
+              <h1>My favorite shape is a {shape}</h1>
+              <div
+                id="shape"
+                style={{borderRadius: `${shape === 'circle' ? 100 : 0 }%`}}
+                onClick={this.changeShape}
+              >
+                Click Me
+              </div>
+            </React.Fragment>
+          )
+        }
+      }
+      ReactDOM.render(<Shape/>, document.getElementById('root'))
+    </script>
+  </body>
+</html>

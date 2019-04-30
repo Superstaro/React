@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Declarative Size</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #box{
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: lightgray;
+        font-size: 2rem;
+        text-shadow: 2px 2px 2px black;
+        transition: all 0.4s;
+        background-color: red;
+      }
+      #box::selection{
+        background:transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Square extends React.Component{
+        state = { size: 150 }
+ 
+        changeSize = () => {
+          if(this.state.size === 150){
+            this.setState({ size: 250 })
+          }else{
+            this.setState({ size: 150 })
+          }
+        }
+ 
+        render(){
+          const { size } = this.state
+          return(
+            <React.Fragment>
+              <h1>My favorite size is {size} x {size} pixels</h1>
+              <div
+                id="box"
+                style={{width: `${size}px`, height: `${size}px`}}
+                onClick={this.changeSize}
+              >
+                Click Me
+              </div>
+            </React.Fragment>
+          )
+        }
+      }
+      ReactDOM.render(<Square/>, document.getElementById('root'))
+    </script>
+  </body>
+</html>

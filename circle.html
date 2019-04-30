@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Declarative Colors</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #box{
+        position: relative;
+        background-color: lightgray;
+        width: 100%;
+      }
+      #circle{
+        position: absolute;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: lightgray;
+        font-size: 2rem;
+        text-shadow: 2px 2px 2px black;
+        transition: all 0.4s;
+        background-color: red;
+        border-radius: 100%;
+      }
+      #circle::selection{
+        background:transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class CircleBox extends React.Component{
+        state = {
+                  left:       0,
+                  top:        0,
+                  circleSize: 200,
+                  boxWidth:   1150,
+                  boxHeight:  500,
+                }
+ 
+        move = () => {
+          const { circleSize, boxWidth, boxHeight} = this.state
+          const left  =   Math.round(
+                            Math.random()  (boxWidth - circleSize)
+                          )
+ 
+          const top   =   Math.round(
+                            Math.random() 
+ (boxHeight - circleSize)
+                          )
+ 
+          this.setState({ left, top })
+        }
+ 
+        render(){
+          return(
+            <React.Fragment>
+                <h1>
+                  My favorite place in the box is {this.state.left} pixels from the left
+                  and {this.state.top} pixels from the top
+                </h1>
+                <div
+                  id="box"
+                  style={{
+                    width:  
+${this.state.boxWidth}px
+,
+                    height: 
+${this.state.boxHeight}px
+                  }}
+                >
+                  <div
+                    id="circle"
+                    style={{
+                      left:   
+${this.state.left}px
+,
+                      top:    
+${this.state.top}px
+,
+                      width:  
+${this.state.circleSize}px
+,
+                      height: 
+${this.state.circleSize}px
+                    }}
+                    onClick={this.move}
+                  >
+                    Click Me
+                  </div>
+                </div>
+            </React.Fragment>
+          )
+        }
+      }
+      ReactDOM.render(
+        <CircleBox/>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Declarative Z Index</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script&gt;
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script&gt;
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script&gt;
+    <style>
+      #wrapper{
+        position: relative;
+        height: 300px;
+      }
+      .box{
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 200px;
+        height: 200px;
+        color: lightgray;
+        font-size: 2rem;
+        text-shadow: 2px 2px 2px black;
+        transition: all 0.4s;
+      }
+      #box::selection{
+        background:transparent;
+      }
+      #red{
+        background-color: red;
+        top: 0px;
+        left: 0px;
+      }
+      #blue{
+        background-color: blue;
+        top: 100px;
+        left: 100px;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Squares extends React.Component{
+        state = { position: 'back' }
+ 
+        changePosition = event => {
+          const select = event.target
+          this.setState({ position: select.value })
+        }
+ 
+        render(){
+          const { position } = this.state
+          return(
+            <React.Fragment>
+              <h1>
+                My favorite position
+                is {position === 'back' ? 'behind' : 'in front of'} the
+                blue box
+              </h1>
+              <div id="wrapper">
+                <div
+                  className="box"
+                  id="red"
+                  style={{zIndex: position === 'back' ? 0 : 2 }}
+                >
+                  Red
+                </div>
+                <div className="box" id="blue">
+                  Blue
+                </div>
+              </div>
+              <select
+                id="select"
+                value={this.state.postion}
+                onChange={this.changePosition}
+              >
+                <option value="back">behind</option>
+                <option value="front">in front of</option>
+              </select>
+            </React.Fragment>
+          )
+        }
+      }
+      ReactDOM.render(<Squares/>, document.getElementById('root'))
+    </script>
+  </body>
+</html>

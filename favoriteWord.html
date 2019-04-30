@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Declarative Text</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #input{
+        width: 300px;
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class FavoriteWord extends React.Component{
+        state = { word: 'Wowwee Zowwee!' }
+ 
+        changeWord = event => {
+          const input = event.target
+          this.setState({ word: input.value })
+        }
+ 
+        render(){
+          return(
+            <React.Fragment>
+              <h1>My favorite word is {this.state.word}</h1>
+              <input
+                id="input"
+                type="text"
+                autoComplete="off"
+                value={this.state.word}
+                onChange={this.changeWord}
+              />
+            </React.Fragment>
+          )
+        }
+      }
+      ReactDOM.render(<FavoriteWord/>, document.getElementById('root'))
+    </script>
+  </body>
+</html>
