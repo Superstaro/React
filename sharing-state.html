@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>React Practice</title>
+    <script src="https://unpkg.com/react@16.8.4/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.8.4/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+
+    <script type="text/babel">
+
+      class ToDos extends React.Component {
+        state = {
+          todos: [
+            {
+                text: "Learn React",
+                isCompleted: false
+            },
+            {
+                text: "Play with Lottie",
+                isCompleted: false
+            },
+            {
+                text: "Sleep",
+                isCompleted: false
+            }
+          ]
+        }
+
+        render(){
+          return(
+          <div>
+             <h1>My Todo List</h1>
+             <ul>
+               {
+                 this.state.todos.map((todo, index) => {
+                   return <Todo key={index} {...todo}/>
+                 })
+               }
+             </ul>
+          </div>
+          )
+        }
+      }
+      {/* create Todo component below... */}
+      const Todo = props =>{
+        return <li>{`${props.text}: ${props.isCompleted}`}</li>
+    }
+      {/* your code goes above this line... */}
+
+
+      ReactDOM.render(<ToDos />, document.getElementById('root'))
+    </script>
+  </body>
+</html>

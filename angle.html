@@ -47,9 +47,7 @@
               <div id="viewpoint">
                 <div
                   id="box"
-                  style={{transform: 
-rotateY(${this.state.degrees}deg)
-}}
+                  style={{transform: `rotateY(${this.state.degrees}deg)`}}
                 >
                   Don't Click Me Bro
                 </div>
@@ -60,7 +58,7 @@ rotateY(${this.state.degrees}deg)
                 min="0"
                 max="180"
                 value={this.state.degrees}
-                onInput={this.changePerspective}
+                onChange={this.changePerspective}
               />
             </React.Fragment>
           )

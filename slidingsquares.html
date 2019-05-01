@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      .box{
+        height: 200px;
+        width: 200px;
+        background-color: red;
+        color: white;
+        display: grid;
+        place-items: center;
+      }
+      .viewpoint{
+        perspective: 1000px;
+      }
+      #canvas{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-gap: 10px;
+      }
+      .box-wrapper{
+        display: grid;
+        place-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Square extends React.Component{
+        state = { angle: this.props.angle }
+
+        changeAngle = event => {
+          this.setState({ angle: event.target.value })
+        }
+
+        render(){
+          return(
+            <div className="box-wrapper">
+              <h3>My favorite angle is {this.state.angle} degrees</h3>
+              <div className="viewpoint">
+                <div
+                  className="box"
+                  style={{transform: `rotateX(${this.state.angle}deg) rotateY(${this.state.angle}deg)`}}
+                >
+                  My first angle was {this.props.angle}
+                </div>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="180"
+                value={this.state.angle}
+                onChange={this.changeAngle}
+              />
+            </div>
+          )
+        }
+
+      }
+
+      ReactDOM.render(
+        <div id="canvas">
+          <Square angle="30"/>
+          <Square angle="90"/>
+          <Square angle="120"/>
+        </div>,
+        document.getElementById('root')
+      );
+
+    </script>
+  </body>
+</html>
