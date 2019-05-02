@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Composite Props</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      body {
+        margin: 0px;
+      }
+      #canvas {
+        background-color: azure;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+      .shape {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: white;
+        font-size: 1.3rem;
+        text-shadow: 2px 2px 2px gray;
+        transition: all 0.4s;
+        box-shadow: 0px 0px 20px lightgray;
+      }
+      .shape::selection {
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Shape extends React.Component {
+        state = {
+          shape: this.props.shape,
+          color: this.props.color,
+          size: Number(this.props.size),
+          top: Math.random() * (window.innerHeight - this.props.size),
+          left: Math.random() * (window.innerWidth - this.props.size),
+          text: "Hello!"
+        };
+
+        componentDidMount() {
+          this.interval = setInterval(this.doSomething, Math.random() * 1000);
+        }
+
+        componentWillUnmount() {
+          clearInterval(this.interval);
+        }
+
+        changeColor = () => {
+          let colors = [
+            "red",
+            "orange",
+            "yellow",
+            "green",
+            "blue",
+            "indigo",
+            "violet"
+          ];
+          colors = colors.filter(color => color !== this.state.color);
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          this.setState({ color, text: "Change Color" });
+        };
+
+        changeSize = () => {
+          if (this.state.size === 300) {
+            this.setState({ size: 150, text: "Shrink" });
+          } else {
+            this.setState({ size: 300, text: "Grow" });
+          }
+        };
+
+        changeShape = () => {
+          if (this.state.shape === "circle") {
+            this.setState({ shape: "square", text: "Change Shape" });
+          } else {
+            this.setState({ shape: "circle", text: "Change Shape" });
+          }
+        };
+
+        move = () => {
+          const top = Math.random() * (window.innerHeight - this.state.size);
+          const left = Math.random() * (window.innerWidth - this.state.size);
+          this.setState({ top, left, text: "Move" });
+        };
+
+        doSomething = () => {
+          const randomNum = Math.random();
+          if (randomNum > 0.75) this.changeColor();
+          else if (randomNum > 0.5) this.changeShape();
+          else if (randomNum > 0.25) this.changeSize();
+          else this.move();
+        };
+
+        render() {
+          const { shape, color, size, top, left } = this.state;
+          return (
+            <div
+              className="shape"
+              style={{
+                borderRadius: `${shape === "circle" ? 100 : 0}%`,
+                backgroundColor: color,
+                width: `${size}px`,
+                height: `${size}px`,
+                top: `${top}px`,
+                left: `${left}px`
+              }}
+            >
+              {this.state.text}
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <div id="canvas">
+          <Shape shape="circle" color="red" size="150" />
+          <Shape shape="square" color="orange" size="300" />
+          <Shape shape="circle" color="yellow" size="300" />
+          <Shape shape="square" color="green" size="150" />
+          <Shape shape="circle" color="blue" size="300" />
+          <Shape shape="square" color="indigo" size="300" />
+          <Shape shape="square" color="violet" size="300" />
+          <Shape shape="circle" color="red" size="150" />
+          <Shape shape="square" color="orange" size="300" />
+        </div>,
+        document.getElementById("root")
+      );
+    </script>
+  </body>
+</html>

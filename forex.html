@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React Forex Calculator!</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class ForexCalculator extends React.Component {
+        state = {
+          amount: 1,
+          base: "USD",
+          rates: {}
+        };
+
+        componentDidMount() {
+          const { base } = this.state;
+          this.fetchRates(base);
+        }
+
+        fetchRates = base => {
+          fetch(`https://api.exchangeratesapi.io/latest?base=${base}`)
+            .then(response => response.json())
+            .then(data => this.setState({ rates: data.rates, base }));
+        };
+
+        handleAmountChange = event => {
+          this.setState({ amount: Number(event.target.value) });
+        };
+
+        handleBaseChange = event => {
+          this.fetchRates(event.target.value);
+        };
+
+        render() {
+          return (
+            <React.Fragment>
+              <h1>What's it Worth?</h1>
+              <input
+                type="number"
+                min="1"
+                value={this.state.amount}
+                onChange={this.handleAmountChange}
+              />
+              <select value={this.state.base} onChange={this.handleBaseChange}>
+                {Object.keys(this.state.rates).map(currencyCode => {
+                  return (
+                    <option value={currencyCode} key={currencyCode}>
+                      {currencyCode}
+                    </option>
+                  );
+                })}
+              </select>
+              <ul>
+                {Object.keys(this.state.rates)
+                  .sort()
+                  .map(currencyCode => {
+                    return (
+                      <li key={currencyCode}>
+                        {currencyCode}{" "}
+                        {(
+                          this.state.rates[currencyCode] * this.state.amount
+                        ).toFixed(2)}
+                      </li>
+                    );
+                  })}
+              </ul>
+            </React.Fragment>
+          );
+        }
+      }
+
+      ReactDOM.render(<ForexCalculator />, document.getElementById("root"));
+    </script>
+  </body>
+</html>

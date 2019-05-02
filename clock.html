@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React Clock!</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #root {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        background-color: azure;
+      }
+      span {
+        font-size: 4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Clock extends React.Component {
+        state = { currentTime: "" };
+
+        componentDidMount() {
+          this.checkTime();
+          this.interval = setInterval(this.checkTime, 1000);
+        }
+
+        componentWillUnmount() {
+          clearInterval(this.interval);
+        }
+
+        checkTime = () => {
+          const currentTime = new Date().toLocaleTimeString();
+          this.setState({ currentTime });
+        };
+
+        render() {
+          return <span>{this.state.currentTime}</span>;
+        }
+      }
+
+      ReactDOM.render(<Clock />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
